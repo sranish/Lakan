@@ -1,132 +1,92 @@
----
-# Project Documentation: Lakan
+# Lakan
 
-This document provides a comprehensive overview of the Lakan project, including its architecture, implementation, testing procedures, results, references, and usability.
----
+A video meeting app built with Next.js. Start an instant meeting, schedule one for later, join by link, and watch recordings of past calls.
 
-## 1. Architecture and Detailed Design
+Named after Lakan, the eccentric strategist from *The Apothecary Diaries*.
 
-### Overview
+## Features
 
-Lakan is a **Next.js** application designed to facilitate virtual meetings. It leverages modern web technologies and frameworks to provide a seamless user experience.
+- **Instant meetings**: start a call and share the link
+- **Scheduled meetings**: pick a date and time with a description
+- **Join by link**: paste a meeting URL to jump in
+- **Personal room**: a permanent meeting link tied to your account
+- **Upcoming / Previous / Recordings**: browse your calls and play back recordings
+- **Pre-join setup**: check your camera and mic before entering
+- **Layouts**: switch between grid and speaker views during a call
+- **Auth**: every page except sign-in and sign-up needs a login
 
-### Key Components
+## Tech stack
 
-- **Frontend Framework**: Built with [Next.js](https://nextjs.org/), a React-based framework for server-side rendering and static site generation.
-- **UI Components**: Utilizes Tailwind CSS for styling and reusable components like `NavBar`, `SideBar`, and `MeetingRoom`.
-- **Video SDK**: Integrates the [Stream Video React SDK](https://getstream.io/video/) for real-time video conferencing.
-- **State Management**: Uses React hooks and context for managing application state.
-- **Routing**: Implements dynamic routing with Next.js' app directory structure.
+| Area      | Tool                                                              |
+| --------- | ----------------------------------------------------------------- |
+| Framework | [Next.js 14](https://nextjs.org/) (App Router), React 18, TypeScript |
+| Video     | [Stream Video React SDK](https://getstream.io/video/)             |
+| Auth      | [Clerk](https://clerk.com/)                                       |
+| UI        | Tailwind CSS, shadcn/ui (Radix), lucide-react                     |
 
-### Design Highlights
+## Getting started
 
-- **Modular Layouts**:
-  - `RootLayout` wraps the entire application with global providers like `StreamVideoProvider`.
-  - `HomeLayout` organizes the homepage with a `NavBar`, `SideBar`, and content sections.
-- **Dynamic Meeting Rooms**: Meeting rooms are dynamically generated based on user-specific IDs.
-- **Responsive Design**: Fully responsive layouts using Tailwind CSS utilities.
+**Prerequisites:** Node.js 18+, a [Clerk](https://clerk.com) app, and a [Stream](https://getstream.io) app with Video enabled.
 
----
+```bash
+git clone <your-repo-url> lakan
+cd lakan
+npm install
+```
 
-## 2. Implementation/Coding
+Create `.env.local` in the project root:
 
-### Key Features
+```env
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
+CLERK_SECRET_KEY=your_clerk_secret_key
 
-1. **Dynamic Routing**:
-   - Example: page.tsx dynamically generates meeting links.
-2. **Video Integration**:
-   - MeetingRoom.tsx integrates Stream Video SDK for real-time video calls.
-3. **Reusable Components**:
-   - Components like `CallControls`, `CallParticipantsList`, and `EndCallButton` ensure modularity.
-4. **Global Styling**:
-   - Tailwind CSS and custom styles in `globals.css`.
+NEXT_PUBLIC_STREAM_API_KEY=your_stream_api_key
+STREAM_SECRET_KEY=your_stream_secret
 
-### Code Highlights
+NEXT_PUBLIC_BASE_URL=http://localhost:3000
+```
 
-- **Root Layout**:
-  ```tsx
-  // filepath: d:\lakan\app\layout.tsx
-  export default function RootLayout({ children }: { children: ReactNode }) {
-    return (
-      <ClerkProvider>
-        <main>
-          <StreamVideoProvider>{children}</StreamVideoProvider>
-        </main>
-      </ClerkProvider>
-    );
-  }
-  ```
-- **Meeting Room Logic**:
-  ```tsx
-  // filepath: d:\lakan\components\MeetingRoom.tsx
-  const CallLayout = () => {
-    switch (layout) {
-      case "grid":
-        return <PaginatedGridLayout />;
-      case "speaker-left":
-        return <SpeakerLayout participantsBarPosition="left" />;
-      default:
-        return <SpeakerLayout participantsBarPosition="right" />;
-    }
-  };
-  ```
+Then run:
 
----
+```bash
+npm run dev
+```
 
-## 3. Testing Procedures and Test Cases
+Open http://localhost:3000.
 
-### Testing Strategy
+## Scripts
 
-- **Unit Testing**: Focused on individual components like `NavBar`, `SideBar`, and `MeetingRoom`.
-- **Integration Testing**: Ensured seamless interaction between components and SDKs.
-- **End-to-End Testing**: Validated user flows like joining a meeting, navigating layouts, and interacting with video controls.
+| Command         | What it does             |
+| --------------- | ------------------------ |
+| `npm run dev`   | Start the dev server     |
+| `npm run build` | Build for production     |
+| `npm start`     | Serve the production build |
+| `npm run lint`  | Run ESLint               |
 
-### Sample Test Cases
+## Project structure
 
-| **Test Case**             | **Expected Result**                                    | **Status** |
-| ------------------------- | ------------------------------------------------------ | ---------- |
-| Render `NavBar` component | NavBar should render with all menu items visible.      | ✅         |
-| Join a meeting room       | User should be redirected to the correct meeting link. | ✅         |
-| Video call functionality  | Video and audio should work without interruptions.     | ✅         |
-| Responsive design check   | Layout should adapt to different screen sizes.         | ✅         |
+```
+app/
+  (auth)/          sign-in and sign-up pages (Clerk)
+  (root)/(home)/   home, upcoming, previous, recordings, personal-room
+  (root)/meeting/[id]/  the meeting page (setup screen, then the room)
+actions/           server action that creates Stream user tokens
+components/        NavBar, SideBar, MeetingRoom, MeetingSetup, CallList, ...
+hooks/             useGetCallById, useGetCalls
+providers/         StreamClientProvider (Stream client wired to the Clerk user)
+middleware.ts      Clerk route protection
+```
 
----
+## How a meeting works
 
-## 4. Results and Inferences
+1. Clerk signs the user in. `StreamClientProvider` asks the server action in `actions/stream.actions.ts` for a Stream token and creates the video client.
+2. Creating a meeting makes a Stream call whose ID is used in the URL `/meeting/<id>`.
+3. The meeting page loads the call, shows `MeetingSetup` (camera and mic preview), then switches to `MeetingRoom` after you join.
 
-### Results
+## Deployment
 
-- Successfully implemented a fully functional video conferencing platform.
-- Achieved responsive design across all devices.
-- Integrated Stream Video SDK for real-time communication.
+Deploy to [Vercel](https://vercel.com/) or any Node host. Set the same environment variables in production, with `NEXT_PUBLIC_BASE_URL` pointing at your deployed domain.
 
-### Inferences
+## Contributing
 
-- Modular design improved code maintainability.
-- Using Next.js' app directory simplified routing and server-side rendering.
-- Tailwind CSS accelerated the development of responsive layouts.
-
----
-
-## 5. References and Other Sources
-
-- [Next.js Documentation](https://nextjs.org/docs)
-- [Stream Video React SDK](https://getstream.io/video/)
-- [Tailwind CSS Documentation](https://tailwindcss.com/docs)
-- [React Documentation](https://reactjs.org/docs/getting-started.html)
-
----
-
-## 6. Conclusion and Usability
-
-### Conclusion
-
-Lakan is a robust and scalable video conferencing platform built with modern web technologies. Its modular architecture and integration with third-party SDKs make it highly maintainable and extensible.
-
-### Usability
-
-- **Target Audience**: Teams and individuals looking for a seamless virtual meeting experience.
-- **Deployment**: Easily deployable on platforms like [Vercel](https://vercel.com/).
-- **Future Enhancements**: Add features like chat integration, recording, and analytics.
-
----
+See [CONTRIBUTING.md](CONTRIBUTING.md).
