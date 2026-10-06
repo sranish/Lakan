@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 export const metadata: Metadata = {
-  title: "Ussop",
+  title: "Lakan",
   description: "A website to catch with people via meetings",
   icons: {
     icon: "/icons/logo.png",

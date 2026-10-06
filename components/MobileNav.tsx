@@ -24,10 +24,10 @@ const MobileNav = () => {
                 <Link href='/' className="flex item-center gap-1">
                     <Image src='/icons/logo.png'
                     width={32}
-                    height={32} alt="ussop logo" className='max-sm:size-10'>
+                    height={32} alt="lakan logo" className='max-sm:size-10'>
                     
                     </Image>
-                    <p className="text-[26px] font-extraboldm text-white">Ussop</p>
+                    <p className="text-[26px] font-extraboldm text-white">Lakan</p>
                 </Link>
                 <div className="flex h-[calc(100vh-72px)] flex-col justify-between overflow-y-auto">
                     <SheetClose asChild>

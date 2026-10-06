@@ -1,4 +1,4 @@
-# Contributing to Ussop
+# Contributing to Lakan
 
 Thank you for your interest in contributing to our project! Here are some guidelines to help you get started.
 
@@ -8,7 +8,7 @@ We are constantly working to improve Test.ai. Feel free to open an issue or subm
 
 ### Environment Setup
 
-Ussop requires API keys for authentication and video streaming:
+Lakan requires API keys for authentication and video streaming:
 
 1. **Create a `.env.local` file** in the project root with the following environment variables:
 

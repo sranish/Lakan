@@ -1,14 +1,14 @@
 ---
-# Project Documentation: Ussop
+# Project Documentation: Lakan
 
-This document provides a comprehensive overview of the Ussop project, including its architecture, implementation, testing procedures, results, references, and usability.
+This document provides a comprehensive overview of the Lakan project, including its architecture, implementation, testing procedures, results, references, and usability.
 ---
 
 ## 1. Architecture and Detailed Design
 
 ### Overview
 
-Ussop is a **Next.js** application designed to facilitate virtual meetings. It leverages modern web technologies and frameworks to provide a seamless user experience.
+Lakan is a **Next.js** application designed to facilitate virtual meetings. It leverages modern web technologies and frameworks to provide a seamless user experience.
 
 ### Key Components
 
@@ -45,7 +45,7 @@ Ussop is a **Next.js** application designed to facilitate virtual meetings. It l
 
 - **Root Layout**:
   ```tsx
-  // filepath: d:\ussop\app\layout.tsx
+  // filepath: d:\lakan\app\layout.tsx
   export default function RootLayout({ children }: { children: ReactNode }) {
     return (
       <ClerkProvider>
@@ -58,7 +58,7 @@ Ussop is a **Next.js** application designed to facilitate virtual meetings. It l
   ```
 - **Meeting Room Logic**:
   ```tsx
-  // filepath: d:\ussop\components\MeetingRoom.tsx
+  // filepath: d:\lakan\components\MeetingRoom.tsx
   const CallLayout = () => {
     switch (layout) {
       case "grid":
@@ -121,7 +121,7 @@ Ussop is a **Next.js** application designed to facilitate virtual meetings. It l
 
 ### Conclusion
 
-Ussop is a robust and scalable video conferencing platform built with modern web technologies. Its modular architecture and integration with third-party SDKs make it highly maintainable and extensible.
+Lakan is a robust and scalable video conferencing platform built with modern web technologies. Its modular architecture and integration with third-party SDKs make it highly maintainable and extensible.
 
 ### Usability
 

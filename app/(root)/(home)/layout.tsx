@@ -3,7 +3,7 @@ import NavBar from '@/components/NavBar';
 import SideBar from '@/components/SideBar';
 import { Metadata } from 'next';
 export const metadata: Metadata = {
-  title: "Ussop",
+  title: "Lakan",
   description: "A website to catch with people via meetings",
   icons: {
     icon: "/icons/logo.png",

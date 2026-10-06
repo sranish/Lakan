@@ -10,10 +10,10 @@ const NavBar = () => {
       <Link href='/' className="flex item-center gap-1">
         <Image src='/icons/logo.png'
         width={32}
-        height={32} alt="ussop logo" className='max-sm:size-10'>
+        height={32} alt="lakan logo" className='max-sm:size-10'>
          
         </Image>
-        <p className="text-[26px] font-extraboldm text-white max-sm:hidden">Ussop</p>
+        <p className="text-[26px] font-extraboldm text-white max-sm:hidden">Lakan</p>
       </Link>
       <div className="flex-between gap-5">
         <SignedIn>
